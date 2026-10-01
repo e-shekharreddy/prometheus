@@ -1,0 +1,13 @@
+groups:
+- name: high-cpu-usage
+  labels:
+    team: monitoring
+  rules:
+  - alert: HighCPUUasge
+    expr: 100 * (1 - avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m]))) > 70
+    for: 2m
+    keep_firing_for: 5m
+    labels:
+      severity: Critical
+    annotations:
+      summary: High CPU usage in server {{ $labels.app }} 
